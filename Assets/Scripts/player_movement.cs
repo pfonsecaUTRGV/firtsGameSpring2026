@@ -3,18 +3,23 @@ using UnityEngine;
 public class player_movement : MonoBehaviour
 {
 
-    [SerializeField] private float speed;
+    public float speed = 5f;
+
+    //[SerializeField] private float speed;
     private Rigidbody2D body;
  
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        GameSettings.Load();
+        speed = GameSettings.PlayerSpeed;
         body = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //speed = GameSettings.PlayerSpeed;
         float horizontalInput = Input.GetAxis("Horizontal");
         body.linearVelocity = new Vector2(horizontalInput * speed, body.linearVelocity.y);
  
