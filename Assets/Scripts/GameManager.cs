@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour
     // Runs every time a new scene loads
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        PlayerDeath.OnPlayerDied -= HandlePlayerDied;
+        PlayerDeath.OnPlayerDied += HandlePlayerDied;
+        
         if (scene.name == "MainMenu")
             SetState(GameState.MainMenu);
         else if (scene.name == "Game")
@@ -52,6 +55,12 @@ public class GameManager : MonoBehaviour
             if (CurrentState == GameState.Playing) PauseGame();
             else if (CurrentState == GameState.Paused) ResumeGame();
         }
+    }
+
+    void HandlePlayerDied()
+    {
+        Debug.Log("GameManager received PlayerDied -> switching to GameOver");
+        SetState(GameState.GameOver);
     }
 
     public void SetState(GameState newState)
@@ -73,6 +82,12 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Game");
     }
 
     public void StartGame()
